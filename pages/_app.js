@@ -1,5 +1,6 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import db from '../db.json'
+import Head from 'next/head'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -31,6 +32,11 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <Head>
+          <title>Netflix Quiz</title>
+          <meta property="og:title" content="Netflix Quiz" key="title" />
+          <meta property="og:image" content={db.bg} />
+        </Head>
         <GlobalStyle />
         <Component {...pageProps} />
       </ThemeProvider>

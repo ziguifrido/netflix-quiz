@@ -28,10 +28,10 @@ export default function Home() {
 
           <Widget>
             <Widget.Header>
-              <h1>Titulo</h1>
+              <h1>{db.title}</h1>
             </Widget.Header>
             <Widget.Content>
-              <p>Conteúdo</p>
+              <p>{db.description}</p>
             </Widget.Content>
           </Widget>
 
@@ -45,7 +45,7 @@ export default function Home() {
           </Widget>
           <Footer/>
         </QuizContainer>
-        <GitHubCorner projectUrl="https://github.com/ziguifrido"/>
+        <GitHubCorner projectUrl="https://github.com/ziguifrido/netflix-quiz"/>
       </QuizBackground>
     </>
   )
