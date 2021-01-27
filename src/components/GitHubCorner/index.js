@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -32,7 +32,7 @@ const SVGWrapper = styled.svg`
 `
 
 // eslint-disable-next-line react/prop-types
-export default function GitHubCorner({ projectUrl }) {
+export default function GitHubCorner ({ projectUrl }) {
   return (
     <Wrapper>
       <a href={projectUrl} target="_blank" rel="noreferrer">

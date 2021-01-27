@@ -1,14 +1,12 @@
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
+
 import db from '../db.json'
 import Widget from '../src/components/Widget'
 import QuizBackground from '../src/components/QuizBackground'
 import Footer from '../src/components/Footer'
 import GitHubCorner from '../src/components/GitHubCorner'
-
-const Title = styled.h1`
-  font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
-`
 
 const QuizContainer = styled.div`
   width: 100%;
@@ -20,7 +18,37 @@ const QuizContainer = styled.div`
     padding: 15px;
   }
 `
-export default function Home() {
+
+const Input = styled.input`
+  width: 100%;
+  height: 38px;
+  border-radius: ${db.theme.borderRadius};
+  border-color: ${db.theme.colors.secondary};
+  margin-top: 1em;
+  margin-bottom: 1em;
+  text-indent: 10px;
+`
+
+const Button = styled.button`
+  width: 100%;
+  height: 36px; 
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: ${db.borderRadius};
+  border: none;
+  color: ${db.theme.colors.contrastText};
+  background-color: ${db.theme.colors.primary};
+  font-family: Lato;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
+  
+`
+
+export default function Home () {
+  const router = useRouter()
+  const [name, setName] = useState('')
+
   return (
     <>
       <QuizBackground backgroundImage={db.bg}>
@@ -32,6 +60,19 @@ export default function Home() {
             </Widget.Header>
             <Widget.Content>
               <p>{db.description}</p>
+            </Widget.Content>
+            <Widget.Content>
+              <form onSubmit={(e) => {
+                e.preventDefault()
+                router.push(`/quiz?name=${name}`)
+              }}>
+                <Input placeholder="Digite o seu nome para jogar!" value={name} onChange={(e) => {
+                  setName(e.target.value)
+                }}/>
+                <Button type='submit' disabled={name.length === 0}>
+                  Jogar
+                </Button>
+              </form>
             </Widget.Content>
           </Widget>
 
@@ -49,4 +90,4 @@ export default function Home() {
       </QuizBackground>
     </>
   )
-} 
+}
