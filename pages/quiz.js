@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { FiChevronLeft } from 'react-icons/fi'
-import { CommonLoading } from 'react-loadingg'
+import { FiChevronLeft, FiCheckCircle, FiXCircle } from 'react-icons/fi'
+import { WaveLoading } from 'react-loadingg'
 
 import db from '../db.json'
 import Widget from '../src/components/Widget'
@@ -10,6 +10,7 @@ import Footer from '../src/components/Footer'
 import GitHubCorner from '../src/components/GitHubCorner'
 import QuizContainer from '../src/components/QuizContainer'
 import Button from '../src/components/Button'
+import AlternativesForm from '../src/components/AlternativesForm'
 
 const LoadingWidget = () => {
   return (
@@ -20,7 +21,7 @@ const LoadingWidget = () => {
         </Widget.Header>
 
         <Widget.Content>
-          <CommonLoading
+          <WaveLoading
             color={db.theme.colors.contrastText}
             size="large"
             style={{
@@ -34,7 +35,16 @@ const LoadingWidget = () => {
   )
 }
 
-const QuestionWidget = ({ router, i, n, question, onSubmit }) => {
+const QuestionWidget = ({ router, i, n, question, onSubmit, addResult }) => {
+  const [isSubmited, setIsSubmited] = useState(false)
+  const [selected, setSelected] = useState(undefined)
+  const [isCorrect, setIsCorrect] = useState(undefined)
+  const isSelected = selected !== undefined
+
+  useEffect(() => {
+    setIsCorrect(selected === question.answer)
+  }, [selected])
+
   return (
     <Widget>
       <Widget.Header>
@@ -48,37 +58,99 @@ const QuestionWidget = ({ router, i, n, question, onSubmit }) => {
         style={{ width: '100%', height: '200px', objectFit: 'cover' }}
         src={question.image}
       />
-      <form onSubmit={onSubmit}>
+      <AlternativesForm
+        onSubmit={(e) => {
+          e.preventDefault()
+          setIsSubmited(true)
+          setTimeout(() => {
+            onSubmit()
+            setIsSubmited(false)
+            setSelected(undefined)
+            addResult(isCorrect)
+          }, 2000)
+        }}
+      >
         <Widget.Content>
           <h1>{question.title}</h1>
         </Widget.Content>
         <Widget.Content>
           {question.alternatives.map((alternative, index) => {
+            const alternativeID = `alternative_${index}`
+            const alternativeStatus = isCorrect ? 'SUCCESS' : 'ERROR'
+            const isSelectedAlternative = selected === index
+
             return (
-              <Widget.Topic key={index} onClick={() => alert(index)}>
-                {`${index + 1} - ${alternative}`}
+              <Widget.Topic
+                as="label"
+                key={alternativeID}
+                htmlFor={alternativeID}
+                data-selected={isSelectedAlternative}
+                data-status={isSubmited && alternativeStatus}
+              >
+                <input
+                  style={{ display: 'none' }}
+                  id={alternativeID}
+                  name={`question_${i}`}
+                  type="radio"
+                  onClick={() => setSelected(index)}
+                />
+                {alternative}
               </Widget.Topic>
             )
           })}
         </Widget.Content>
         <Widget.Content>
-          <Button type="submit">Próximo</Button>
+          <Button type="submit" disabled={!isSelected}>
+            Confirmar
+          </Button>
         </Widget.Content>
-      </form>
+        {isCorrect && isSubmited &&
+          <Widget.Content>
+            <p>
+              <FiCheckCircle color={db.theme.colors.success}/>
+              &nbsp;Acertou!
+            </p>
+          </Widget.Content>}
+        {!isCorrect && isSubmited &&
+          <Widget.Content>
+            <p>
+              <FiXCircle color={db.theme.colors.wrong}/>
+              &nbsp;Errou!
+            </p>
+          </Widget.Content>}
+      </AlternativesForm>
     </Widget>
   )
 }
 
-const ResultWidget = () => {
+const ResultWidget = ({ results, router }) => {
   return (
     <>
       <Widget>
         <Widget.Header>
+          <p onClick={() => router.push('/')}>
+            <FiChevronLeft size={20}/>&nbsp;&nbsp;&nbsp;
+          </p>
           <h1>Resultado</h1>
         </Widget.Header>
 
         <Widget.Content>
-          <p></p>
+          <ul>
+            {results.map((result, index) => {
+              return (
+                <li key={index}>
+                  {`Pergunta ${index + 1}:`} &nbsp;
+                  {result && <FiCheckCircle color={db.theme.colors.success}/>}
+                  {!result && <FiXCircle color={db.theme.colors.wrong}/>}
+                </li>
+              )
+            })}
+          </ul>
+        </Widget.Content>
+        <Widget.Content>
+          <p>
+            {router.query.name}, você acertou {results.reduce((sum, result) => { return result ? sum + 1 : sum }, 0)} respostas!
+          </p>
         </Widget.Content>
       </Widget>
     </>
@@ -91,17 +163,33 @@ const screenStates = {
   RESULT: 'RESULT'
 }
 
+const handleSubmit = (i, n, setScreenState, setI) => {
+  if (i + 1 === n) {
+    setScreenState(screenStates.RESULT)
+  } else {
+    setI(i + 1)
+  }
+}
+
 export default function QuizPage () {
   const router = useRouter()
   const [i, setI] = useState(0)
   const n = db.questions.length
   const question = db.questions[i]
   const [screenState, setScreenState] = useState(screenStates.LOADING)
+  const [results, setResults] = useState([])
+
+  const addResult = (result) => {
+    setResults([
+      ...results,
+      result
+    ])
+  }
 
   useEffect(() => {
     setTimeout(() => {
       setScreenState(screenStates.QUIZ)
-    }, 3000)
+    }, 2000)
   }, [])
 
   return (
@@ -110,16 +198,15 @@ export default function QuizPage () {
         <QuizContainer>
           {screenState === screenStates.LOADING && <LoadingWidget />}
           {screenState === screenStates.QUIZ &&
-            <QuestionWidget router={router} i={i} n={n} question={question} onSubmit={(e) => {
-              e.preventDefault()
-              if (i + 1 === n) {
-                setScreenState(screenStates.RESULT)
-              } else {
-                setI(i + 1)
-              }
-            }}/>
+            <QuestionWidget
+              router={router}
+              i={i} n={n}
+              question={question}
+              onSubmit={() => { handleSubmit(i, n, setScreenState, setI) }}
+              addResult={addResult}
+            />
           }
-          {screenState === screenStates.RESULT && <ResultWidget />}
+          {screenState === screenStates.RESULT && <ResultWidget results={results} router={router}/>}
           <Footer/>
         </QuizContainer>
         <GitHubCorner projectUrl="https://github.com/ziguifrido/netflix-quiz"/>

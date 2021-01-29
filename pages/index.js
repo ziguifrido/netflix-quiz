@@ -9,6 +9,7 @@ import GitHubCorner from '../src/components/GitHubCorner'
 import Input from '../src/components/Input'
 import Button from '../src/components/Button'
 import QuizContainer from '../src/components/QuizContainer'
+import QuizLogo from '../src/components/QuizLogo'
 
 export default function Home() {
   const router = useRouter()
@@ -18,7 +19,7 @@ export default function Home() {
     <>
       <QuizBackground backgroundImage={db.bg}>
         <QuizContainer>
-
+          <QuizLogo />
           <Widget>
             <Widget.Header>
               <h1>{db.title}</h1>
@@ -43,7 +44,6 @@ export default function Home() {
               </form>
             </Widget.Content>
           </Widget>
-
           <Widget>
             <Widget.Header>
               <h1>Titulo</h1>
