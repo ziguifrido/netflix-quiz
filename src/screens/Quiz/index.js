@@ -3,16 +3,17 @@ import { useRouter } from 'next/router'
 import { FiChevronLeft, FiCheckCircle, FiXCircle } from 'react-icons/fi'
 import { WaveLoading } from 'react-loadingg'
 
-import db from '../db.json'
-import Widget from '../src/components/Widget'
-import QuizBackground from '../src/components/QuizBackground'
-import Footer from '../src/components/Footer'
-import GitHubCorner from '../src/components/GitHubCorner'
-import QuizContainer from '../src/components/QuizContainer'
-import Button from '../src/components/Button'
-import AlternativesForm from '../src/components/AlternativesForm'
+// import db from '../../../db.json'
+import Widget from '../../../src/components/Widget'
+import QuizBackground from '../../../src/components/QuizBackground'
+import Footer from '../../../src/components/Footer'
+import GitHubCorner from '../../../src/components/GitHubCorner'
+import QuizContainer from '../../../src/components/QuizContainer'
+import Button from '../../../src/components/Button'
+import AlternativesForm from '../../../src/components/AlternativesForm'
+import Link from '../../components/Link'
 
-const LoadingWidget = () => {
+const LoadingWidget = ({ db }) => {
   return (
     <>
       <Widget>
@@ -35,7 +36,7 @@ const LoadingWidget = () => {
   )
 }
 
-const QuestionWidget = ({ router, i, n, question, onSubmit, addResult }) => {
+const QuestionWidget = ({ router, i, n, question, onSubmit, addResult, db }) => {
   const [isSubmited, setIsSubmited] = useState(false)
   const [selected, setSelected] = useState(undefined)
   const [isCorrect, setIsCorrect] = useState(undefined)
@@ -48,9 +49,10 @@ const QuestionWidget = ({ router, i, n, question, onSubmit, addResult }) => {
   return (
     <Widget>
       <Widget.Header>
-        <p onClick={() => router.push('/')}>
-          <FiChevronLeft size={20}/>&nbsp;&nbsp;&nbsp;
-        </p>
+        <Link href="/" style={{ color: db.theme.colors.contrastText }}>
+          <FiChevronLeft size={20}/>
+        </Link>
+        &nbsp;&nbsp;&nbsp;
         <h1>{`Pergunta ${i + 1} de ${n}`}</h1>
       </Widget.Header>
       <img
@@ -123,14 +125,15 @@ const QuestionWidget = ({ router, i, n, question, onSubmit, addResult }) => {
   )
 }
 
-const ResultWidget = ({ results, router }) => {
+const ResultWidget = ({ results, router, db }) => {
   return (
     <>
       <Widget>
         <Widget.Header>
-          <p onClick={() => router.push('/')}>
-            <FiChevronLeft size={20}/>&nbsp;&nbsp;&nbsp;
-          </p>
+          <Link href="/" style={{ color: db.theme.colors.contrastText }}>
+            <FiChevronLeft size={20}/>
+          </Link>
+          &nbsp;&nbsp;&nbsp;
           <h1>Resultado</h1>
         </Widget.Header>
 
@@ -171,7 +174,7 @@ const handleSubmit = (i, n, setScreenState, setI) => {
   }
 }
 
-export default function QuizPage () {
+export default function QuizScreen({ db }) {
   const router = useRouter()
   const [i, setI] = useState(0)
   const n = db.questions.length
@@ -196,7 +199,7 @@ export default function QuizPage () {
     <>
       <QuizBackground backgroundImage={db.bg}>
         <QuizContainer>
-          {screenState === screenStates.LOADING && <LoadingWidget />}
+          {screenState === screenStates.LOADING && <LoadingWidget db={db}/>}
           {screenState === screenStates.QUIZ &&
             <QuestionWidget
               router={router}
@@ -204,9 +207,10 @@ export default function QuizPage () {
               question={question}
               onSubmit={() => { handleSubmit(i, n, setScreenState, setI) }}
               addResult={addResult}
+              db={db}
             />
           }
-          {screenState === screenStates.RESULT && <ResultWidget results={results} router={router}/>}
+          {screenState === screenStates.RESULT && <ResultWidget results={results} router={router} db={db}/>}
           <Footer/>
         </QuizContainer>
         <GitHubCorner projectUrl="https://github.com/ziguifrido/netflix-quiz"/>

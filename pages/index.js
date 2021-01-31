@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 
 import db from '../db.json'
@@ -10,6 +11,7 @@ import Input from '../src/components/Input'
 import Button from '../src/components/Button'
 import QuizContainer from '../src/components/QuizContainer'
 import QuizLogo from '../src/components/QuizLogo'
+import Link from '../src/components/Link'
 
 export default function Home() {
   const router = useRouter()
@@ -20,7 +22,16 @@ export default function Home() {
       <QuizBackground backgroundImage={db.bg}>
         <QuizContainer>
           <QuizLogo />
-          <Widget>
+          <Widget
+            as={motion.section}
+            transition={{ delay: 0, duration: 0.5 }}
+            variants={{
+              show: { opacity: 1, y: '0' },
+              hidden: { opacity: 0, y: '100%' }
+            }}
+            initial="hidden"
+            animate="show"
+          >
             <Widget.Header>
               <h1>{db.title}</h1>
             </Widget.Header>
@@ -44,15 +55,46 @@ export default function Home() {
               </form>
             </Widget.Content>
           </Widget>
-          <Widget>
+          <Widget
+            as={motion.section}
+            transition={{ delay: 0.25, duration: 0.5 }}
+            variants={{
+              show: { opacity: 1, y: '0' },
+              hidden: { opacity: 0, y: '100%' }
+            }}
+            initial="hidden"
+            animate="show"
+          >
             <Widget.Header>
-              <h1>Titulo</h1>
+              <h1>Quizes da galera</h1>
             </Widget.Header>
             <Widget.Content>
-              <p>Conteúdo</p>
+              {db.external.map((url, index) => {
+                const [projectName, githubUser] = url
+                  .replace(/\//g, '')
+                  .replace('https:', '')
+                  .replace('.vercel.app', '')
+                  .split('.')
+
+                return (
+                  <Widget.Topic as={Link} key={index} href={`/quiz/${githubUser}___${projectName}`}>
+                    {`${githubUser}/${projectName}`}
+                  </Widget.Topic>
+                )
+              })}
             </Widget.Content>
           </Widget>
-          <Footer/>
+          <motion.section
+            transition={{ delay: 0.5, duration: 0.5 }}
+            variants={{
+              show: { opacity: 1, y: '0' },
+              hidden: { opacity: 0, y: '100%' }
+            }}
+            initial="hidden"
+            animate="show"
+          >
+            <Footer/>
+          </motion.section>
         </QuizContainer>
         <GitHubCorner projectUrl="https://github.com/ziguifrido/netflix-quiz"/>
       </QuizBackground>

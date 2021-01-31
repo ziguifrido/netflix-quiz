@@ -1,6 +1,8 @@
+import React from 'react'
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
-const Button = styled.button`
+const ButtonBase = styled.button`
   background-color: ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.colors.contrastText};
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -23,5 +25,16 @@ const Button = styled.button`
     cursor: not-allowed;
   }
 `
+
+const Button = (props) => {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      <ButtonBase {...props} />
+    </motion.div>
+  )
+}
 
 export default Button

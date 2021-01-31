@@ -61,6 +61,11 @@ Widget.Topic = styled.a`
   &:hover,
   &:focus {
     opacity: .5;
+    transform:scale(1.1);
+  }
+
+  &:active{
+    transform:scale(0.9);
   }
 `
 
