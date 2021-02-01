@@ -1,28 +1,84 @@
 {
     "bg": "https://wallpapercave.com/wp/wp6134538.png",
-    "title": "Quiz sobre o Netflix",
-    "description": "Teste os seus conhecimentos sobre o Netflix e vamos descobrir o quanto você sabe sobre esse popular serviço de streaming!",
+    "title": "Quiz sobre a Netflix",
+    "description": "Teste os seus conhecimentos sobre a Netflix e vamos descobrir o quanto você sabe sobre esse popular serviço de streaming!",
     "questions": [
       {
-        "image": "https://media.giphy.com/media/xUOxf3yDKCuwpOlT3i/giphy.gif",
-        "title": "Como fazer um seletor por id via CSS?",
-        "description": "Essa é pra aquecer",
+        "image": "https://vignette.wikia.nocookie.net/logopedia/images/4/41/NetFlix_1998_logo.jpg/revision/latest?cb=20120213032242",
+        "title": "Em que ano a Netflix foi fundada?",
+        "description": "Faz tempo em haha",
         "answer": 2,
         "alternatives": [
-          ".elemento",
-          "*elemento",
-          "#elemento",
-          "%elemento"
+          "1991",
+          "1995",
+          "1997",
+          "2000",
+          "2003"
         ]
       },
       {
-        "image": "https://media.giphy.com/media/13FrpeVH09Zrb2/giphy.gif",
-        "title": "Como fazer um background gradiente com css?",
-        "description": "Faz tempo em haha",
+        "image": "https://media.giphy.com/media/7T8uLiWEsnytWkQKvF/giphy.gif",
+        "title": "Com qual tipo de serviço a Netflix foi criada?",
+        "description": "Não foi sempre streaming?! 🤔",
+        "answer": 3,
+        "alternatives": [
+          "Venda de DVDs em lojas",
+          "Locadora de DVDs",
+          "Aluguel de DVDs via correios",
+          "Aluguel e venda de DVDs via correios",
+          "Salas de cinema"
+        ]
+      },
+      {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/100_Winchester_Circle.jpg/1280px-100_Winchester_Circle.jpg",
+        "title": "Em qual cidade fica a sede da Netflix?",
+        "description": "Ouvi dizer que fica na Califórnia! 😂",
         "answer": 0,
         "alternatives": [
-           "background: linear-gradient(#e66465, #9198e5);",
-           "background: gradient(#e66465, #9198e5);"
+           "Los Gatos, California",
+           "Cupertino, Califórnia",
+           "Mountain View, Califórnia",
+           "Palo Alto, Califórnia"
+        ]
+      },
+      {
+        "image": "https://media.giphy.com/media/MTKpZ9rSgYYthtxf4e/giphy.gif",
+        "title": "Em 2021 quantos assinantes a Netflix alcançou?",
+        "description": "Eu chuto algumas centenas de milhões! 🙃",
+        "answer": 3,
+        "alternatives": [
+           "50 Milhões",
+           "100 Milhões",
+           "150 Milhões",
+           "200 Milhões",
+           "250 Milhões"
+        ]
+      },
+      {
+        "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fobservatoriodocinema.bol.uol.com.br%2Fwp-content%2Fuploads%2F2018%2F06%2Fnetflix-br.jpg&f=1&nofb=1",
+        "title": "Em que ano a Netflix chegou ao Brasil?",
+        "description": "Faz tanto tempo que eu nem lembro! 😂",
+        "answer": 1,
+        "alternatives": [
+           "2010",
+           "2011",
+           "2012",
+           "2013",
+           "2014"
+        ]
+      },
+      {
+        "image": "https://media.giphy.com/media/bIqdxoOVJ2oak/giphy.gif",
+        "title": "Qual foi a primeira série brasileira a estrear na Netflix?",
+        "description": "É do Brasil !!! ✌️",
+        "answer": 3,
+        "alternatives": [
+           "Irmandade",
+           "O Mecanismo",
+           "O Escolhido",
+           "3%",
+           "Pacto de sangue",
+           "Samantha!"
         ]
       }
     ],
@@ -43,3 +99,5 @@
       "borderRadius": "4px"
     }
   }
+
+  

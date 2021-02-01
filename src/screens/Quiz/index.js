@@ -56,7 +56,7 @@ const QuestionWidget = ({ router, i, n, question, onSubmit, addResult, db }) => 
         <h1>{`Pergunta ${i + 1} de ${n}`}</h1>
       </Widget.Header>
       <img
-        alt={question.description}
+        alt="gif"
         style={{ width: '100%', height: '200px', objectFit: 'cover' }}
         src={question.image}
       />
@@ -74,6 +74,7 @@ const QuestionWidget = ({ router, i, n, question, onSubmit, addResult, db }) => 
       >
         <Widget.Content>
           <h1>{question.title}</h1>
+          <h5>{question.description}</h5>
         </Widget.Content>
         <Widget.Content>
           {question.alternatives.map((alternative, index) => {
