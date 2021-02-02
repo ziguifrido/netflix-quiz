@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { FiChevronLeft, FiCheckCircle, FiXCircle } from 'react-icons/fi'
+import { FiChevronLeft, FiCheckCircle, FiXCircle, FiCheck } from 'react-icons/fi'
 import { WaveLoading } from 'react-loadingg'
 
-// import db from '../../../db.json'
 import Widget from '../../../src/components/Widget'
 import QuizBackground from '../../../src/components/QuizBackground'
 import Footer from '../../../src/components/Footer'
@@ -12,6 +11,7 @@ import QuizContainer from '../../../src/components/QuizContainer'
 import Button from '../../../src/components/Button'
 import AlternativesForm from '../../../src/components/AlternativesForm'
 import Link from '../../components/Link'
+import ShareWidget from '../../components/ShareWidget'
 
 const LoadingWidget = ({ db }) => {
   return (
@@ -36,7 +36,7 @@ const LoadingWidget = ({ db }) => {
   )
 }
 
-const QuestionWidget = ({ router, i, n, question, onSubmit, addResult, db }) => {
+const QuestionWidget = ({ i, n, question, onSubmit, addResult, db }) => {
   const [isSubmited, setIsSubmited] = useState(false)
   const [selected, setSelected] = useState(undefined)
   const [isCorrect, setIsCorrect] = useState(undefined)
@@ -96,8 +96,14 @@ const QuestionWidget = ({ router, i, n, question, onSubmit, addResult, db }) => 
                   name={`question_${i}`}
                   type="radio"
                   onClick={() => setSelected(index)}
+                  disabled={isSubmited}
                 />
                 {alternative}
+                {isSubmited && index === question.answer &&
+                  <span style={{ float: 'right' }}>
+                    <FiCheck color={db.theme.colors.success} />
+                  </span>
+                }
               </Widget.Topic>
             )
           })}
@@ -157,6 +163,7 @@ const ResultWidget = ({ results, router, db }) => {
           </p>
         </Widget.Content>
       </Widget>
+      <ShareWidget />
     </>
   )
 }
@@ -203,7 +210,6 @@ export default function QuizScreen({ db }) {
           {screenState === screenStates.LOADING && <LoadingWidget db={db}/>}
           {screenState === screenStates.QUIZ &&
             <QuestionWidget
-              router={router}
               i={i} n={n}
               question={question}
               onSubmit={() => { handleSubmit(i, n, setScreenState, setI) }}

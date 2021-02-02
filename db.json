@@ -93,8 +93,8 @@
         "secondary": "#831010",
         "mainBg": "#564d4d",
         "contrastText": "#FFFFFF",
-        "wrong": "#FF5722",
-        "success": "#4CAF50"
+        "wrong": "#f44336",
+        "success": "#4caf50"
       },
       "borderRadius": "4px"
     }
